@@ -1,175 +1,702 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-BR" class="dark scroll-smooth">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Império Muzuri</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Império Muzuri — Biblioteca Ancestral & Fundamentos</title>
+  <meta name="description" content="Biblioteca interna e grimório prático de fundamentos, ervas, elementos e mandingas do Império Muzuri.">
+  <meta name="theme-color" content="#0a0a0c">
+
+  <!-- Google Fonts: Cinzel Decorative / Cinzel (Místico & Tradicional) + Inter / Outfit (Moderno & Legível) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700;900&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
+      darkMode: 'class',
       theme: {
         extend: {
+          fontFamily: {
+            title: ['Cinzel', 'serif'],
+            sans: ['Outfit', 'sans-serif'],
+          },
           colors: {
-            'muzuri-red': '#8b0000',
-            'muzuri-dark': '#121212',
+            muzuri: {
+              black: '#070709',
+              dark: '#0e0f13',
+              card: '#14151b',
+              border: '#2a2228',
+              accent: '#8b0000',
+              crimson: '#c4151c',
+              gold: '#d4af37',
+              goldMuted: '#9e7d22',
+            }
+          },
+          boxShadow: {
+            'glow-red': '0 0 25px -5px rgba(196, 21, 28, 0.35)',
+            'glow-gold': '0 0 20px -5px rgba(212, 175, 55, 0.25)',
           }
         }
       }
     }
   </script>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <!-- Font Awesome 6 Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
   <style>
-    body { background-color: #121212; color: #e5e7eb; font-family: system-ui, -apple-system, sans-serif; }
-    .scrollbar-hide::-webkit-scrollbar { display: none; }
-    .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
+    /* Estilização de scrollbar refinada */
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #0a0a0d;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #2a1f26;
+      border-radius: 9999px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #8b0000;
+    }
+
+    /* Ambient background gradient texture */
+    .bg-mystic-radial {
+      background: 
+        radial-gradient(circle at 15% 20%, rgba(139, 0, 0, 0.12) 0%, transparent 45%),
+        radial-gradient(circle at 85% 80%, rgba(212, 175, 55, 0.05) 0%, transparent 50%),
+        #09090c;
+    }
+
+    /* Glassmorphism sutil */
+    .glass-card {
+      background: rgba(18, 19, 25, 0.7);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+    }
+
+    .glass-card-hover:hover {
+      border-color: rgba(196, 21, 28, 0.35);
+      background: rgba(22, 23, 30, 0.85);
+      transform: translateY(-2px);
+    }
+
+    /* Transições refinadas */
+    * {
+      -webkit-tap-highlight-color: transparent;
+    }
   </style>
 </head>
-<body class="selection:bg-red-900 selection:text-white">
+<body class="bg-mystic-radial text-gray-200 min-h-screen selection:bg-muzuri-crimson selection:text-white flex flex-col font-sans antialiased overflow-x-hidden">
 
-  <!-- HEADER MOBILE -->
-  <header class="md:hidden flex items-center justify-between p-4 bg-black border-b border-[#8b0000] sticky top-0 z-50">
-    <div class="flex items-center gap-2 text-[#8b0000] font-bold text-xl uppercase tracking-widest">
-      <i class="fa-solid fa-skull"></i> IMPÉRIO MUZURI
+  <!-- Barra de Progresso de Leitura Superior -->
+  <div id="progress-bar" class="fixed top-0 left-0 h-[3px] bg-gradient-to-r from-muzuri-crimson via-muzuri-gold to-muzuri-crimson z-[70] w-0 transition-all duration-150"></div>
+
+  <!-- HEADER MOBILE E TABLET (STICKY) -->
+  <header class="md:hidden flex items-center justify-between px-5 py-3.5 bg-[#0a0a0d]/90 backdrop-blur-md border-b border-muzuri-border sticky top-0 z-50">
+    <div class="flex items-center gap-3">
+      <div class="w-9 h-9 rounded-full bg-gradient-to-tr from-muzuri-accent to-red-950 flex items-center justify-center border border-muzuri-gold/40 shadow-glow-red">
+        <i class="fa-solid fa-skull text-muzuri-gold text-sm"></i>
+      </div>
+      <div>
+        <h1 class="font-title font-bold text-sm tracking-wider text-white">IMPÉRIO MUZURI</h1>
+        <p class="text-[10px] tracking-widest uppercase text-muzuri-gold font-medium">Fundamento & Raiz</p>
+      </div>
     </div>
-    <button onclick="toggleMenu()" class="text-[#8b0000] text-2xl focus:outline-none">
-      <i id="menuIcon" class="fa-solid fa-bars"></i>
+    
+    <button onclick="toggleMenu()" aria-label="Abrir Menu" class="w-10 h-10 flex items-center justify-center rounded-xl bg-muzuri-card border border-muzuri-border text-gray-300 hover:text-white active:scale-95 transition-all">
+      <i id="menuIcon" class="fa-solid fa-bars-staggered text-lg"></i>
     </button>
   </header>
 
   <!-- OVERLAY MOBILE -->
-  <div id="backdrop" onclick="toggleMenu()" class="fixed inset-0 bg-black/75 z-30 hidden md:hidden backdrop-blur-sm"></div>
+  <div id="backdrop" onclick="closeMenu()" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-40 hidden md:hidden transition-opacity"></div>
 
-  <div class="min-h-screen flex flex-col md:flex-row">
-    <!-- MENU LATERAL -->
-    <nav id="sidebar" class="fixed md:static inset-y-0 left-0 transform -translate-x-full md:translate-x-0 transition-transform duration-300 ease-in-out bg-black w-72 p-6 border-r border-[#8b0000]/30 flex flex-col gap-6 z-40 overflow-y-auto">
-      <div class="hidden md:flex items-center gap-2 text-[#8b0000] font-bold text-2xl uppercase tracking-widest border-b border-[#8b0000]/30 pb-4">
-        <i class="fa-solid fa-skull"></i> MUZURI
-      </div>
+  <div class="flex flex-1 w-full max-w-[1600px] mx-auto relative">
+    
+    <!-- SIDEBAR DE NAVEGAÇÃO -->
+    <aside id="sidebar" class="fixed md:sticky top-0 h-screen inset-y-0 left-0 transform -translate-x-full md:translate-x-0 transition-transform duration-300 ease-out bg-[#0a0a0e]/95 md:bg-black/40 backdrop-blur-xl w-80 md:w-84 border-r border-muzuri-border/60 flex flex-col z-50 overflow-hidden">
       
-      <div class="flex flex-col gap-2">
-        <p class="text-xs text-gray-500 uppercase tracking-widest mb-2 font-semibold">Biblioteca Interna</p>
-        <div id="nav-buttons" class="flex flex-col gap-1.5"></div>
+      <!-- Brand Sidebar Header -->
+      <div class="p-6 border-b border-muzuri-border/50">
+        <div class="flex items-center gap-3.5">
+          <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-muzuri-accent via-red-950 to-black flex items-center justify-center border border-muzuri-gold/50 shadow-glow-red">
+            <i class="fa-solid fa-skull text-muzuri-gold text-xl"></i>
+          </div>
+          <div>
+            <div class="font-title font-bold text-lg tracking-wider text-white leading-tight">MUZURI</div>
+            <div class="flex items-center gap-1.5 mt-0.5">
+              <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+              <span class="text-[11px] font-semibold uppercase tracking-wider text-muzuri-gold">Biblioteca Ancestral</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Campo de Busca em Tempo Real -->
+        <div class="mt-5 relative">
+          <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-500 text-xs"></i>
+          <input 
+            type="text" 
+            id="searchInput" 
+            oninput="handleSearch(this.value)"
+            placeholder="Pesquisar erva, banho ou mandinga..." 
+            class="w-full bg-[#121318] text-sm text-gray-200 pl-9 pr-8 py-2.5 rounded-xl border border-muzuri-border focus:border-muzuri-crimson focus:outline-none focus:ring-1 focus:ring-muzuri-crimson transition-all placeholder:text-gray-600"
+          >
+          <button id="clearSearchBtn" onclick="clearSearch()" class="hidden absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-300">
+            <i class="fa-solid fa-xmark text-xs"></i>
+          </button>
+        </div>
       </div>
 
-      <div class="mt-auto pt-6 border-t border-[#8b0000]/30 text-xs text-gray-500 text-center leading-relaxed">
-        Só pros zoeirão da família.<br><span class="text-gray-400">Respeita o fundamento!</span>
+      <!-- Lista de Capítulos -->
+      <div class="flex-1 overflow-y-auto px-4 py-4 space-y-1.5" id="nav-container">
+        <!-- Injetado via Javascript -->
       </div>
-    </nav>
 
-    <!-- ÁREA DE LEITURA -->
-    <main class="flex-1 p-6 md:p-12 overflow-y-auto w-full max-w-4xl mx-auto">
-      <h1 id="chapter-title" class="text-3xl md:text-5xl font-black text-white mb-8 pb-4 border-b-2 border-[#8b0000] inline-block"></h1>
-      <div id="chapter-body" class="space-y-6 text-base md:text-lg leading-relaxed text-gray-300"></div>
+      <!-- Rodapé Sidebar -->
+      <div class="p-4 border-t border-muzuri-border/50 bg-[#07070a]/80">
+        <div class="p-3.5 rounded-xl bg-gradient-to-r from-muzuri-accent/15 to-transparent border border-muzuri-accent/30 text-center">
+          <p class="text-[11px] font-medium text-gray-400">
+            "Observar é o primeiro passo."
+          </p>
+          <p class="text-[10px] text-muzuri-gold font-semibold tracking-wider uppercase mt-1">
+            Respeita o fundamento
+          </p>
+        </div>
+      </div>
+    </aside>
+
+    <!-- CONTEÚDO PRINCIPAL (MAIN CONTENT) -->
+    <main class="flex-1 flex flex-col min-w-0">
+      
+      <!-- Top banner decorativo -->
+      <div class="relative w-full border-b border-muzuri-border/40 py-8 px-6 md:px-12 bg-gradient-to-b from-black/60 to-transparent">
+        <div class="max-w-4xl mx-auto flex flex-col md:flex-row md:items-center justify-between gap-4">
+          <div>
+            <div class="flex items-center gap-2 mb-2">
+              <span id="badge-category" class="px-2.5 py-1 text-[11px] font-semibold tracking-widest uppercase rounded-full bg-muzuri-accent/20 border border-muzuri-accent/40 text-red-400">
+                Grimório Familiar
+              </span>
+              <span class="text-xs text-gray-500">•</span>
+              <span id="badge-count" class="text-xs text-gray-400">Capítulo Selecionado</span>
+            </div>
+            <h2 id="chapter-title" class="text-2xl sm:text-3xl md:text-5xl font-title font-bold text-white tracking-wide leading-tight"></h2>
+          </div>
+
+          <!-- Botão de Ação / Compartilhar rápido -->
+          <div class="flex items-center gap-2">
+            <button onclick="copyChapterLink()" class="px-4 py-2 text-xs font-semibold rounded-xl bg-muzuri-card border border-muzuri-border hover:border-muzuri-gold text-gray-300 hover:text-white transition-all flex items-center gap-2 shadow-sm active:scale-95">
+              <i class="fa-solid fa-share-nodes text-muzuri-gold"></i>
+              <span>Copiar Link</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Container do Texto / Leitura Confortável -->
+      <div class="flex-1 px-5 sm:px-8 md:px-14 py-8 md:py-12">
+        <div class="max-w-4xl mx-auto">
+          
+          <!-- Notificação de Copiado -->
+          <div id="toast" class="fixed bottom-6 right-6 z-[80] bg-neutral-900 border border-muzuri-gold text-white px-4 py-3 rounded-xl shadow-2xl flex items-center gap-3 transform translate-y-20 opacity-0 transition-all duration-300 pointer-events-none">
+            <i class="fa-solid fa-circle-check text-muzuri-gold text-lg"></i>
+            <span class="text-sm font-medium" id="toast-message">Link copiado com sucesso!</span>
+          </div>
+
+          <!-- Corpo dos Textos Formatados com Alta Teoria Visual -->
+          <div id="chapter-body" class="space-y-6"></div>
+
+          <!-- Navegação Inferior (Próximo / Anterior) -->
+          <div class="mt-14 pt-8 border-t border-muzuri-border/60 flex items-center justify-between gap-4">
+            <button id="btn-prev" onclick="prevChapter()" class="group flex items-center gap-3 px-5 py-3 rounded-xl bg-muzuri-card/70 border border-muzuri-border hover:border-muzuri-crimson transition-all text-left">
+              <i class="fa-solid fa-arrow-left text-gray-500 group-hover:text-muzuri-crimson group-hover:-translate-x-1 transition-all"></i>
+              <div>
+                <span class="block text-[10px] uppercase font-semibold text-gray-500">Anterior</span>
+                <span id="prev-title" class="text-xs sm:text-sm font-bold text-gray-300 group-hover:text-white transition-colors">---</span>
+              </div>
+            </button>
+
+            <button id="btn-next" onclick="nextChapter()" class="group flex items-center gap-3 px-5 py-3 rounded-xl bg-muzuri-card/70 border border-muzuri-border hover:border-muzuri-crimson transition-all text-right ml-auto">
+              <div>
+                <span class="block text-[10px] uppercase font-semibold text-gray-500">Próximo</span>
+                <span id="next-title" class="text-xs sm:text-sm font-bold text-gray-300 group-hover:text-white transition-colors">---</span>
+              </div>
+              <i class="fa-solid fa-arrow-right text-gray-500 group-hover:text-muzuri-crimson group-hover:translate-x-1 transition-all"></i>
+            </button>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Rodapé Final da Página -->
+      <footer class="w-full border-t border-muzuri-border/40 py-6 px-6 text-center text-xs text-gray-500 bg-[#070709]">
+        <p class="font-title tracking-wider text-gray-400">IMPÉRIO MUZURI &copy; 2026</p>
+        <p class="mt-1 text-[11px] text-gray-600">Preservação de Sabedoria, Raízes e Elementos Naturais.</p>
+      </footer>
+
     </main>
   </div>
 
   <script>
+    // Dados fiéis e 100% integrais do PDF original
     const capitulos = [
       {
         id: "introducao",
         icon: "fa-book-open",
+        tag: "Iniciação & Visão",
         titulo: "Introdução",
-        conteudo: `Me chamo Kalrai sou filho de Bará e sou filho da Cabocla Jurema, sou de uma tradição onde os elementos são muito importantes juntei em um lugar tudo que fui aprendendo sobre os elementos e trabalhos espirituais\na ideia do livro é compreender o porquê de cada elemento em um trabalho e como montar um trabalho pra cada problema\n\nA vida e o fundamento\nMuito por conta da nossa tradição indígena, aprendemos a dar valor à vida, tanto animal quanto vegetal. cada banho de ervas é um sacrifício de uma vida, e cada espécie de erva ou animal tem uma energia de vida diferente que pode ser usada de formas diferentes nas medicinas.\nPor isso, utilizar um elemento não é simplesmente pegar qualquer coisa e colocar dentro de uma receita. É entender o que estamos utilizando, respeitar sua origem e saber por que ele está sendo oferecido ou empregado naquele trabalho.\nCada elemento possui suas características. Uma planta nasce, cresce, busca nutrientes e se reproduz. Uma semente guarda a possibilidade de gerar uma nova vida. A água corre, a chuva alimenta a terra e o fogo transforma aquilo que toca.\nVocê começa a entender o porque aquela erva é usada pra tal coisa quando você observa ela na natureza, como ela vive. Então observar é o primeiro passo!!!!\n\nCada casa tem seu fundamento\nO que tem aqui é minha tradição, é o que aprendi com mais velhos e o que fui atrás de pesquisar pra colocar aqui, não significa que o que ta escrito aqui é lei, qualquer dúvida ou contradição me chama e vamos tomar um café e conversar de macumba!`
+        conteudo: `Me chamo Kalrai sou filho de Bará e sou filho da Cabocla Jurema, sou de uma tradição onde os elementos são muito importantes juntei em um lugar tudo que fui aprendendo sobre os elementos e trabalhos espirituais
+a ideia do livro é compreender o porquê de cada elemento em um trabalho e como montar um trabalho pra cada problema
+
+A vida e o fundamento
+Muito por conta da nossa tradição indígena, aprendemos a dar valor à vida, tanto animal quanto vegetal. cada banho de ervas é um sacrifício de uma vida, e cada espécie de erva ou animal tem uma energia de vida diferente que pode ser usada de formas diferentes nas medicinas.
+Por isso, utilizar um elemento não é simplesmente pegar qualquer coisa e colocar dentro de uma receita. É entender o que estamos utilizando, respeitar sua origem e saber por que ele está sendo oferecido ou empregado naquele trabalho.
+Cada elemento possui suas características. Uma planta nasce, cresce, busca nutrientes e se reproduz. Uma semente guarda a possibilidade de gerar uma nova vida. A água corre, a chuva alimenta a terra e o fogo transforma aquilo que toca.
+Você começa a entender o porque aquela erva é usada pra tal coisa quando você observa ela na natureza, como ela vive. Então observar é o primeiro passo!!!!
+
+Cada casa tem seu fundamento
+O que tem aqui é minha tradição, é o que aprendi com mais velhos e o que fui atrás de pesquisar pra colocar aqui, não significa que o que ta escrito aqui é lei, qualquer dúvida ou contradição me chama e vamos tomar um café e conversar de macumba!`
       },
       {
         id: "farinha",
         icon: "fa-fire-flame-curved",
+        tag: "Elemento Terra",
         titulo: "Farinha",
-        conteudo: `toda macumba tem uma base, tem começo, meio e fim, um conjunto de elementos + intenção + fundamento, a primeira coisa que estudamos é a base, a farinha representa muito a energia da terra, é justamente por conta disso que usamos as farinhas como base, um trabalho contém vários elementos juntos então vamos começar do começo...\n\nMandioca\nNasce e cresce debaixo da terra, responsável por sustentar a planta.\ne tem que ser muito do cuiudo pra tirar a mandioca de baixo da terra, ela é nosso maior símbolo de criar raízes, sustentar, firmeza.\nA Mandioca é sustentar, é arrancada da terra e queimada e moída, usada muito em padês onde queremos firmar com a energia da terra proteção, estabilizar algo, trazer força pra algo.\n\nMilho\nA semente rompe a terra cresce em busca do sol e com a energia solar transforma uma semente em várias espigas cada espiga com vários milhos, Energia solar, multiplicação e ampliação\nPor isso é muito usado para prosperidade, crescimento.\ncom isso a gente já entende mais ou menos como cada elemento vai afetar sua entrega. todos os elementos em uma magia tem que fazer sentido pra atingir o objetivo\nEntão vamos ao Exemplo: se queremos fazer uma entrega pra sustentar a saúde de alguém, começaria usando a farinha de Mandioca, agora se eu quiser ampliar prosperidade eu começaria pela farinha de milho`
+        conteudo: `toda macumba tem uma base, tem começo, meio e fim, um conjunto de elementos + intenção + fundamento, a primeira coisa que estudamos é a base, a farinha representa muito a energia da terra, é justamente por conta disso que usamos as farinhas como base, um trabalho contém vários elementos juntos então vamos começar do começo...
+
+Mandioca
+Nasce e cresce debaixo da terra, responsável por sustentar a planta.
+e tem que ser muito do cuiudo pra tirar a mandioca de baixo da terra, ela é nosso maior símbolo de criar raízes, sustentar, firmeza.
+A Mandioca é sustentar, é arrancada da terra e queimada e moída, usada muito em padês onde queremos firmar com a energia da terra proteção, estabilizar algo, trazer força pra algo.
+
+Milho
+A semente rompe a terra cresce em busca do sol e com a energia solar transforma uma semente em várias espigas cada espiga com vários milhos, Energia solar, multiplicação e ampliação
+Por isso é muito usado para prosperidade, crescimento.
+com isso a gente já entende mais ou menos como cada elemento vai afetar sua entrega. todos os elementos em uma magia tem que fazer sentido pra atingir o objetivo
+Então vamos ao Exemplo: se queremos fazer uma entrega pra sustentar a saúde de alguém, começaria usando a farinha de Mandioca, agora se eu quiser ampliar prosperidade eu começaria pela farinha de milho`
       },
       {
         id: "temperatura",
         icon: "fa-wand-magic-sparkles",
+        tag: "Energia & Moyo",
         titulo: "Temperatura e Estado",
-        conteudo: `a maioria do estudo da vida do macumbeiro está em volta das ervas, pra facilitar esse estudo a gente separa ela em temperaturas, isso ajuda a entender como elas funcionam energeticamente.\nmas isso não é lei e essas temperaturas mudam bastante de casa pra casa e é só uma forma de organizar o estudo, cada erva tem sua particularidade e separar em 3 etiquetas seria burrice kkkkk.\na gente vai usar nesse livro aqui para você sozinho ter um norte de como cada erva pode agir de forma diferente\nas ervas podem ser classificadas como\n• Fria ou Específica - Tem em geral trabalho de acalmar, desacelerar energias, ou aquelas que tem uma vibração muito específica.\n• Morna - Equilibra energias ou fazem algo vibrar em uma frequência e se algo vibra prosperidade por exemplo você atrai prosperidade, então podem ser chamadas de energizadoras\n• Quente - Movimenta energias, expulsa energias, agita energia, nada fica parado.\n\nErva Fresca e Erva Seca\nalém da erva ter uma classe (temperatura) ela tem seu estado atual, fresca ou seca:\nErva fresca = colhido na hora\nErva Seca = Erva que faz tempo que foi colhida, já está literalmente ressecada\né importante saber o estado atual da erva pra saber como vamos usá-la\nToda vez que usamos uma erva em um trabalho, buscamos a energia de vida dela, o que chamamos de sangue verde ou Moyo(energia, força espiritual).\nA erva fresca carrega essa energia no seu líquido. Quando maceramos um boldo fresco, por exemplo, a água fica bem verde porque rompemos as folhas e liberamos esse líquido. Ali temos o sangue verde da planta.\nJá quando a erva seca, entendemos que essa energia de vida fica adormecida. Então, precisamos despertar ela antes de usar.\nÉ aí que entra o calor. Nos banhos, maceramos a erva seca em água quente justamente para acordar essa energia e trazer movimento para ela. No charuto e no cachimbo, fazemos isso através do fogo, que transforma o Tabaco em fumaça.\n\nErva fresca -> sangue verde -> energia de vida.\nErva seca -> energia adormecida -> FOGO -> despertar.`
+        conteudo: `a maioria do estudo da vida do macumbeiro está em volta das ervas, pra facilitar esse estudo a gente separa ela em temperaturas, isso ajuda a entender como elas funcionam energeticamente.
+mas isso não é lei e essas temperaturas mudam bastante de casa pra casa e é só uma forma de organizar o estudo, cada erva tem sua particularidade e separar em 3 etiquetas seria burrice kkkkk.
+a gente vai usar nesse livro aqui para você sozinho ter um norte de como cada erva pode agir de forma diferente
+as ervas podem ser classificadas como
+• Fria ou Específica - Tem em geral trabalho de acalmar, desacelerar energias, ou aquelas que tem uma vibração muito específica.
+• Morna - Equilibra energias ou fazem algo vibrar em uma frequência e se algo vibra prosperidade por exemplo você atrai prosperidade, então podem ser chamadas de energizadoras
+• Quente - Movimenta energias, expulsa energias, agita energia, nada fica parado.
+
+Erva Fresca e Erva Seca
+além da erva ter uma classe (temperatura) ela tem seu estado atual, fresca ou seca:
+Erva fresca = colhido na hora
+Erva Seca = Erva que faz tempo que foi colhida, já está literalmente ressecada
+é importante saber o estado atual da erva pra saber como vamos usá-la
+Toda vez que usamos uma erva em um trabalho, buscamos a energia de vida dela, o que chamamos de sangue verde ou Moyo(energia, força espiritual).
+A erva fresca carrega essa energia no seu líquido. Quando maceramos um boldo fresco, por exemplo, a água fica bem verde porque rompemos as folhas e liberamos esse líquido. Ali temos o sangue verde da planta.
+Já quando a erva seca, entendemos que essa energia de vida fica adormecida. Então, precisamos despertar ela antes de usar.
+É aí que entra o calor. Nos banhos, maceramos a erva seca em água quente justamente para acordar essa energia e trazer movimento para ela. No charuto e no cachimbo, fazemos isso através do fogo, que transforma o Tabaco em fumaça.
+
+Erva fresca -> sangue verde -> energia de vida.
+Erva seca -> energia adormecida -> FOGO -> despertar.`
       },
       {
         id: "7-ervas",
         icon: "fa-leaf",
+        tag: "As Principais",
         titulo: "7 Ervas de Umbanda",
-        conteudo: `O Principal desse livro é o estudo das ervas e outros elementos, quando o assunto é estudar ervas temos que primeiro dominar as 7 ervas principais de umbanda, depois as outras, essas 7 ervas principais na minha família são:\n• Boldo\n• Alecrim\n• Espada de Ogum\n• Arruda\n• Guiné\n• Alfazema\n• Manjericão\n\nCom esse fundamento na mão você já sabe descarregar, energizar, tranquilizar, proteger ambiente, defumar.\n\nBoldo\n• Classificação: Fria (Limpeza, equilíbrio e alívio)\nFamoso Tapete de Oxalá, o Boldo é uma erva muito usada em banhos de limpeza, banhos pré-gira e amacis. Suas folhas são muito amargas e, na medicina popular, é usado para ajudar na digestão e em ressacas.\nAmargor -> alívio dos excessos -> equilíbrio -> purificação.\n! Cuidados: Gestantes devem evitar.\n\nAlecrim\n• Classificação: Morna (Energização, clareza e vitalidade)\nO alecrim é uma erva muito aromática. É uma planta resistente, gosta de sol e consegue se desenvolver bem em ambientes mais secos.\nPor isso, dentro da magia, é muito usado para energizar, fortalecer, trazer ânimo e clarear a pessoa ou a mente.\n\nEspada-de-Ogum\n• Classificação: Quente (Corte, limpeza e proteção)\nA Espada-de-Ogum é uma planta de folhas longas, firmes, pontiagudas e que crescem para cima.\nÉ como se ela fosse a segurança da casa: fica na entrada, protege, corta e ajuda a manter o ambiente protegido.\n! Cuidados: algumas espécies podem ser tóxicas para Pets.\n\nArruda\n• Classificação: Quente (Limpeza pesada e proteção)\nCheiro forte -> afasta -> protege -> limpa.\nA Arruda ficou conhecida como uma erva de proteção contra o mau-olhado e a inveja.\n! Cuidados: Uso interno é contraindicado para grávidas.\n\nGuiné\n• Classificação: Quente (Muito agressiva / Limpeza pesada)\nela se defende de ataques, cria proteção, cria contra-ataque isso fez a planta ser associada a Afastamento de energias negativas e proteção.\n! Cuidados: Pode ser Tóxica, então cuidado no uso interno.\n\nAlfazema (Lavanda)\n• Classificação: Fria (Harmonizadora e pacificadora)\nAroma suave -> acalma -> harmoniza -> purifica.\né justamente essa ação que faz ela ser usada em trabalhos onde buscamos calma, paz, harmonia e sensação de bem-estar.\n\nManjericão\n• Classificação: Morna (Controle emocional, equilíbrio, harmonização e limpeza)\nNa nossa tradição, ele é muito usado para controle emocional, equilíbrio e harmonização. toda vez que o excesso de emoções está atrapalhando algo usamos o manjericão.`
+        conteudo: `O Principal desse livro é o estudo das ervas e outros elementos, quando o assunto é estudar ervas temos que primeiro dominar as 7 ervas principais de umbanda, depois as outras, essas 7 ervas principais na minha família são:
+• Boldo
+• Alecrim
+• Espada de Ogum
+• Arruda
+• Guiné
+• Alfazema
+• Manjericão
+
+Com esse fundamento na mão você já sabe descarregar, energizar, tranquilizar, proteger ambiente, defumar.
+
+Boldo
+• Classificação: Fria (Limpeza, equilíbrio e alívio)
+Famoso Tapete de Oxalá, o Boldo é uma erva muito usada em banhos de limpeza, banhos pré-gira e amacis. Suas folhas são muito amargas e, na medicina popular, é usado para ajudar na digestão e em ressacas.
+Amargor -> alívio dos excessos -> equilíbrio -> purificação.
+! Cuidados: Gestantes devem evitar.
+
+Alecrim
+• Classificação: Morna (Energização, clareza e vitalidade)
+O alecrim é uma erva muito aromática. É uma planta resistente, gosta de sol e consegue se desenvolver bem em ambientes mais secos.
+Por isso, dentro da magia, é muito usado para energizar, fortalecer, trazer ânimo e clarear a pessoa ou a mente.
+
+Espada-de-Ogum
+• Classificação: Quente (Corte, limpeza e proteção)
+A Espada-de-Ogum é uma planta de folhas longas, firmes, pontiagudas e que crescem para cima.
+É como se ela fosse a segurança da casa: fica na entrada, protege, corta e ajuda a manter o ambiente protegido.
+! Cuidados: algumas espécies podem ser tóxicas para Pets.
+
+Arruda
+• Classificação: Quente (Limpeza pesada e proteção)
+Cheiro forte -> afasta -> protege -> limpa.
+A Arruda ficou conhecida como uma erva de proteção contra o mau-olhado e a inveja.
+! Cuidados: Uso interno é contraindicado para grávidas.
+
+Guiné
+• Classificação: Quente (Muito agressiva / Limpeza pesada)
+ela se defende de ataques, cria proteção, cria contra-ataque isso fez a planta ser associada a Afastamento de energias negativas e proteção.
+! Cuidados: Pode ser Tóxica, então cuidado no uso interno.
+
+Alfazema (Lavanda)
+• Classificação: Fria (Harmonizadora e pacificadora)
+Aroma suave -> acalma -> harmoniza -> purifica.
+é justamente essa ação que faz ela ser usada em trabalhos onde buscamos calma, paz, harmonia e sensação de bem-estar.
+
+Manjericão
+• Classificação: Morna (Controle emocional, equilíbrio, harmonização e limpeza)
+Na nossa tradição, ele é muito usado para controle emocional, equilíbrio e harmonização. toda vez que o excesso de emoções está atrapalhando algo usamos o manjericão.`
       },
       {
         id: "aguas",
         icon: "fa-droplet",
+        tag: "Fluidez & Emoções",
         titulo: "Águas",
-        conteudo: `Assim como cada erva possui uma característica própria, cada água carrega a história do lugar e do momento em que esteve presente.\nÁgua do mar, água de rio, água de chuva ou água de nascente continuam sendo água, mas não encontramos cada uma delas da mesma maneira na natureza.\n\nÁgua do Mar\nÁgua da kalunga Grande, representa muita coisa pra gente macumbeiro, é a representação física do mundo espiritual, é a representação de ciclos.\nNa magia, a água do mar é tradicionalmente associada à limpeza, ao descarrego, à renovação e à movimentação de energias.\nReceber -> movimentar -> transformar -> devolver.\n\nÁgua de Rio\nO rio está sempre seguindo um caminho.\nNa magia, a água de rio pode ser relacionada ao movimento, à passagem e ao desenvolvimento dos caminhos.\nFluxo -> movimento -> passagem -> continuidade.\n\nÁgua da Chuva\nA chuva cai sobre a terra, molha o solo e fornece água para que as plantas cresçam.\nChuva -> nutrição -> crescimento -> renovação.\n\nÁgua de Cachoeira\nNa cachoeira, a água cai com força, produz impacto e movimenta aquilo que encontra pelo caminho.\nQueda -> impacto -> movimento -> transformação.\n\nÁgua de Coco\nA água de coco está protegida dentro do fruto e faz parte do desenvolvimento da semente.\nNa nossa tradição, é utilizada em trabalhos ligados à cabeça e ao Ori.\nProteção -> nutrição -> pureza -> fortalecimento.`
+        conteudo: `Assim como cada erva possui uma característica própria, cada água carrega a história do lugar e do momento em que esteve presente.
+Água do mar, água de rio, água de chuva ou água de nascente continuam sendo água, mas não encontramos cada uma delas da mesma maneira na natureza.
+
+Água do Mar
+Água da kalunga Grande, representa muita coisa pra gente macumbeiro, é a representação física do mundo espiritual, é a representação de ciclos.
+Na magia, a água do mar é tradicionalmente associada à limpeza, ao descarrego, à renovação e à movimentação de energias.
+Receber -> movimentar -> transformar -> devolver.
+
+Água de Rio
+O rio está sempre seguindo um caminho.
+Na magia, a água de rio pode ser relacionada ao movimento, à passagem e ao desenvolvimento dos caminhos.
+Fluxo -> movimento -> passagem -> continuidade.
+
+Água da Chuva
+A chuva cai sobre a terra, molha o solo e fornece água para que as plantas cresçam.
+Chuva -> nutrição -> crescimento -> renovação.
+
+Água de Cachoeira
+Na cachoeira, a água cai com força, produz impacto e movimenta aquilo que encontra pelo caminho.
+Queda -> impacto -> movimento -> transformação.
+
+Água de Coco
+A água de coco está protegida dentro do fruto e faz parte do desenvolvimento da semente.
+Na nossa tradição, é utilizada em trabalhos ligados à cabeça e ao Ori.
+Proteção -> nutrição -> pureza -> fortalecimento.`
       },
       {
         id: "bebidas",
-        icon: "fa-mug-hot",
+        icon: "fa-wine-glass-empty",
+        tag: "Fogo Líquido & Sopro",
         titulo: "Bebidas e Fumos",
-        conteudo: `Muitas pessoas de fora da religião olham para as entidades bebendo e pensam apenas que é um vício ou um gosto que aquela entidade tinha em vida. Pouco se fala sobre o fundamento por trás de cada bebida.\n\nCachaça\nA cachaça é uma bebida forte e quente. Quando bebemos, sentimos o calor se espalhar pelo corpo.\nTambém existe o entendimento de que o álcool pode ajudar a juntar e concentrar as forças de um trabalho, deixando aquilo mais forte e mais concentrado.\nFermentação + destilação -> concentração -> calor -> limpeza -> movimento.\n\nCafé\nO café é uma das bebidas mais usadas nos trabalhos espirituais, principalmente quando falamos do Povo das Almas e dos Pretos Velhos.\nEle ajuda a tirar o cansaço e trazer a mente para o presente.\n\nChampanhe e Espumantes\nQuando olhamos para a bebida, encontramos algumas características muito marcantes: ela é aromática, festiva, borbulhante, formosa, gostosa. Ela não passa despercebida. Essa linguagem conversa muito com a imagem ritual das Pombagiras.\n\nVinho\nO vinho é uma bebida que passou por transformação. o Vinho fala muito sobre Amadurecimento.\nPor isso, o vinho pode ser usado quando queremos trabalhar amor, prazer, celebração, prosperidade, união e amadurecimento.\n\nFumos e o fundamento da fumaça\nTabaco não é sinônimo de cigarro. Tabaco é medicina e comunicação com o sagrado.\nQuando o guia coloca o Tabaco na boca, ele trabalha uma determinada energia dentro de si e depois a externaliza através da fumaça.\nEnergia -> intenção -> sopro -> fumaça -> manifestação.`
+        conteudo: `Muitas pessoas de fora da religião olham para as entidades bebendo e pensam apenas que é um vício ou um gosto que aquela entidade tinha em vida. Pouco se fala sobre o fundamento por trás de cada bebida.
+
+Cachaça
+A cachaça é uma bebida forte e quente. Quando bebemos, sentimos o calor se espalhar pelo corpo.
+Também existe o entendimento de que o álcool pode ajudar a juntar e concentrar as forças de um trabalho, deixando aquilo mais forte e mais concentrado.
+Fermentação + destilação -> concentração -> calor -> limpeza -> movimento.
+
+Café
+O café é uma das bebidas mais usadas nos trabalhos espirituais, principalmente quando falamos do Povo das Almas e dos Pretos Velhos.
+Ele ajuda a tirar o cansaço e trazer a mente para o presente.
+
+Champanhe e Espumantes
+Quando olhamos para a bebida, encontramos algumas características muito marcantes: ela é aromática, festiva, borbulhante, formosa, gostosa. Ela não passa despercebida. Essa linguagem conversa muito com a imagem ritual das Pombagiras.
+
+Vinho
+O vinho é uma bebida que passou por transformação. o Vinho fala muito sobre Amadurecimento.
+Por isso, o vinho pode ser usado quando queremos trabalhar amor, prazer, celebração, prosperidade, união e amadurecimento.
+
+Fumos e o fundamento da fumaça
+Tabaco não é sinônimo de cigarro. Tabaco é medicina e comunicação com o sagrado.
+Quando o guia coloca o Tabaco na boca, ele trabalha uma determinada energia dentro de si e depois a externaliza através da fumaça.
+Energia -> intenção -> sopro -> fumaça -> manifestação.`
       },
       {
         id: "receitas",
         icon: "fa-mortar-pestle",
+        tag: "Prática & Mandingas",
         titulo: "Receitas e Mandingas",
-        conteudo: `Banhos\nos banhos de ervas são usados a milênios de anos na nossa tradição. Abaixo tem algumas receitas prontas de banhos.\n\nBanho de descarrego Boldo\n• 10 a 15 folhas de boldo\n• 1 fio de mel ou 1 colher de açúcar\n• 7 borrifadas de um perfume (se você já sabe seu orixá use a numerologia dele)\nusamos para descarregar, equilibrar e energizar uma pessoa, é o famoso arroz e feijão que ajuda em tudo.\n\nBanho desenvolvimento mediúnico (Incorporação)\n• 3 a 5 Anis Estrelados\n• 3 Galhos de Samambaia\n• punhado de erva complementar\n\nBanho Controle Emocional\n• 1 Maço de Manjericão\n• 1 Maço de Hortelã\n• Água do cozimento de canjica (grão de milho branco inteiro)\nEm uma bacia grande, macere o manjericão e a hortelã em água fria e reserve. Em uma panela, cozinhe a canjica. Após o Cozimento retire a água e misture-a às ervas maceradas.\n\nMandingas\nPote do puxa saco\nQuando tu tiver um mardito te perturbando e tu quiser que ele pare de te encher o saco você faz isso:\n• Pote (qualquer pote)\n• nome da pessoa 7 vezes num papelzim\ncoloca o nome no pote, em cima do nome tu coloca Sal grosso e todo tipo de pimenta que tiver ai.\nLacra esse pote e taca no freezer, deixe esse pote apodrecer lá.\n\nTrouxinha Preta\nnum pano de cetim preto você coloca o nome da pessoa. em cima do nome você entope de Sal grosso e por cima todo tipo de pimenta. amarra a trouxinha e enterra na encruzilhada, cemitério ou praia.\n\nPote da Imunidade Alho e Mel\ncoloca os dentes de alho em um pote de vidro e cobre tudo com mel, deixa 15 dias em um armário escuro e depois pode comer 1 por dia.`
+        conteudo: `Banhos
+os banhos de ervas são usados a milênios de anos na nossa tradição. Abaixo tem algumas receitas prontas de banhos.
+
+Banho de descarrego Boldo
+• 10 a 15 folhas de boldo
+• 1 fio de mel ou 1 colher de açúcar
+• 7 borrifadas de um perfume (se você já sabe seu orixá use a numerologia dele)
+usamos para descarregar, equilibrar e energizar uma pessoa, é o famoso arroz e feijão que ajuda em tudo.
+
+Banho desenvolvimento mediúnico (Incorporação)
+• 3 a 5 Anis Estrelados
+• 3 Galhos de Samambaia
+• punhado de erva complementar
+
+Banho Controle Emocional
+• 1 Maço de Manjericão
+• 1 Maço de Hortelã
+• Água do cozimento de canjica (grão de milho branco inteiro)
+Em uma bacia grande, macere o manjericão e a hortelã em água fria e reserve. Em uma panela, cozinhe a canjica. Após o Cozimento retire a água e misture-a às ervas maceradas.
+
+Mandingas
+Pote do puxa saco
+Quando tu tiver um mardito te perturbando e tu quiser que ele pare de te encher o saco você faz isso:
+• Pote (qualquer pote)
+• nome da pessoa 7 vezes num papelzim
+coloca o nome no pote, em cima do nome tu coloca Sal grosso e todo tipo de pimenta que tiver ai.
+Lacra esse pote e taca no freezer, deixe esse pote apodrecer lá.
+
+Trouxinha Preta
+num pano de cetim preto você coloca o nome da pessoa. em cima do nome você entope de Sal grosso e por cima todo tipo de pimenta. amarra a trouxinha e enterra na encruzilhada, cemitério ou praia.
+
+Pote da Imunidade Alho e Mel
+coloca os dentes de alho em um pote de vidro e cobre tudo com mel, deixa 15 dias em um armário escuro e depois pode comer 1 por dia.`
       }
     ];
 
-    let capAtualId = capitulos[0].id;
+    let currentChapterIndex = 0;
+    let filteredCapitulos = [...capitulos];
 
     function renderNav() {
-      const container = document.getElementById('nav-buttons');
+      const container = document.getElementById('nav-container');
       container.innerHTML = '';
-      capitulos.forEach(cap => {
+
+      if (filteredCapitulos.length === 0) {
+        container.innerHTML = `
+          <div class="p-6 text-center text-gray-500">
+            <i class="fa-regular fa-face-meh text-2xl mb-2 text-gray-600"></i>
+            <p class="text-xs">Nenhum fundamento encontrado com essa palavra.</p>
+          </div>
+        `;
+        return;
+      }
+
+      filteredCapitulos.forEach((cap) => {
+        const originalIndex = capitulos.findIndex(c => c.id === cap.id);
+        const isActive = originalIndex === currentChapterIndex;
+        
         const btn = document.createElement('button');
-        const active = cap.id === capAtualId;
-        btn.className = `flex items-center gap-3 text-left p-3 rounded-lg transition-all w-full text-sm font-medium ${
-          active 
-            ? 'bg-[#8b0000] text-white shadow-[0_0_15px_rgba(139,0,0,0.5)] font-bold' 
-            : 'text-gray-400 hover:bg-neutral-900 hover:text-red-400'
+        btn.className = `w-full text-left p-3 rounded-2xl flex items-center gap-3.5 transition-all duration-200 group relative ${
+          isActive 
+            ? 'bg-gradient-to-r from-muzuri-accent to-red-950/80 text-white shadow-glow-red border border-muzuri-gold/40' 
+            : 'text-gray-400 hover:text-white hover:bg-[#15161d] border border-transparent'
         }`;
-        btn.innerHTML = `<i class="fa-solid ${cap.icon} w-5 text-center"></i> <span>${cap.titulo}</span>`;
-        btn.onclick = () => selectCapitulo(cap.id);
+        
+        btn.innerHTML = `
+          <div class="w-10 h-10 rounded-xl flex items-center justify-center transition-transform group-hover:scale-105 ${
+            isActive ? 'bg-black/40 text-muzuri-gold' : 'bg-[#181922] text-gray-400 group-hover:text-red-400'
+          }">
+            <i class="fa-solid ${cap.icon} text-sm"></i>
+          </div>
+          <div class="flex-1 min-w-0">
+            <div class="text-[10px] font-semibold tracking-wider uppercase ${isActive ? 'text-muzuri-gold' : 'text-gray-500'}">
+              ${cap.tag}
+            </div>
+            <div class="text-sm font-semibold truncate ${isActive ? 'text-white' : 'text-gray-300'}">
+              ${cap.titulo}
+            </div>
+          </div>
+          ${isActive ? '<i class="fa-solid fa-chevron-right text-xs text-muzuri-gold pr-1"></i>' : ''}
+        `;
+        
+        btn.onclick = () => {
+          selectChapterByIndex(originalIndex);
+          closeMenu();
+        };
+
         container.appendChild(btn);
       });
     }
 
-    function selectCapitulo(id) {
-      capAtualId = id;
-      const cap = capitulos.find(c => c.id === id);
+    function selectChapterByIndex(index) {
+      if (index < 0 || index >= capitulos.length) return;
+      currentChapterIndex = index;
+      const cap = capitulos[currentChapterIndex];
+
+      // Atualiza URL hash para compartilhamento direto
+      window.location.hash = cap.id;
+
+      // Badges e Cabeçalho
+      document.getElementById('badge-category').innerText = cap.tag;
+      document.getElementById('badge-count').innerText = `Capítulo ${index + 1} de ${capitulos.length}`;
       document.getElementById('chapter-title').innerText = cap.titulo;
-      
-      const body = document.getElementById('chapter-body');
-      body.innerHTML = '';
-      
+
+      // Renderiza blocos de conteúdo com hierarquia visual elegante
+      const container = document.getElementById('chapter-body');
+      container.innerHTML = '';
+
       const paragraphs = cap.conteudo.split('\n\n');
-      paragraphs.forEach(p => {
-        if (p.includes('•') || p.includes('!')) {
+
+      paragraphs.forEach((p, pIdx) => {
+        const trimmed = p.trim();
+        if (!trimmed) return;
+
+        // Se for uma lista de marcadores (•) ou aviso (!)
+        if (trimmed.includes('•') || trimmed.includes('! Cuidados:')) {
           const card = document.createElement('div');
-          card.className = "bg-black/60 border-l-4 border-[#8b0000] p-4 rounded-r-lg whitespace-pre-wrap text-gray-200 text-sm md:text-base leading-relaxed";
-          card.innerText = p;
-          body.appendChild(card);
-        } else {
-          const para = document.createElement('p');
-          para.className = "whitespace-pre-wrap text-sm md:text-base leading-relaxed";
-          para.innerText = p;
-          body.appendChild(para);
+          card.className = "glass-card p-5 md:p-6 rounded-2xl relative overflow-hidden transition-all";
+          
+          // Barra lateral com cor do arquétipo
+          const accentBar = document.createElement('div');
+          accentBar.className = "absolute left-0 top-0 bottom-0 w-1.5 bg-gradient-to-b from-muzuri-crimson to-muzuri-gold";
+          card.appendChild(accentBar);
+
+          const lines = trimmed.split('\n');
+          const linesContainer = document.createElement('div');
+          linesContainer.className = "space-y-2.5 pl-2 text-sm sm:text-base leading-relaxed";
+
+          lines.forEach(line => {
+            const lTrimmed = line.trim();
+            if (lTrimmed.startsWith('•')) {
+              const item = document.createElement('div');
+              item.className = "flex items-start gap-3 text-gray-200";
+              item.innerHTML = `
+                <span class="text-muzuri-gold mt-1 text-xs"><i class="fa-solid fa-circle-dot"></i></span>
+                <span>${lTrimmed.replace('•', '').trim()}</span>
+              `;
+              linesContainer.appendChild(item);
+            } else if (lTrimmed.startsWith('! Cuidados:')) {
+              const warn = document.createElement('div');
+              warn.className = "mt-3 p-3 rounded-xl bg-red-950/40 border border-red-800/40 text-red-300 text-xs sm:text-sm flex items-center gap-2.5";
+              warn.innerHTML = `<i class="fa-solid fa-triangle-exclamation text-red-400 text-sm"></i> <strong>Atenção:</strong> ${lTrimmed.replace('! Cuidados:', '').trim()}`;
+              linesContainer.appendChild(warn);
+            } else {
+              const text = document.createElement('p');
+              text.className = "text-gray-300 font-medium";
+              text.innerText = lTrimmed;
+              linesContainer.appendChild(text);
+            }
+          });
+
+          card.appendChild(linesContainer);
+          container.appendChild(card);
+        }
+        // Se for um subtítulo ou elemento em destaque (poucas palavras, ex: Mandioca, Milho, Erva Fresca...)
+        else if (trimmed.length < 45 && !trimmed.includes('.') && pIdx > 0) {
+          const subHeading = document.createElement('h3');
+          subHeading.className = "text-xl sm:text-2xl font-title font-bold text-white pt-6 pb-2 border-b border-muzuri-border/40 flex items-center gap-3";
+          subHeading.innerHTML = `<span class="w-2.5 h-2.5 rounded-full bg-muzuri-crimson"></span> ${trimmed}`;
+          container.appendChild(subHeading);
+        }
+        // Parágrafo corrido padrão com espaçamento confortável
+        else {
+          const paragraphEl = document.createElement('p');
+          paragraphEl.className = "text-base sm:text-lg leading-relaxed text-gray-300 whitespace-pre-wrap font-normal";
+          
+          // Destaca sutilmente fórmulas e setas (ex: "Erva fresca -> sangue verde")
+          if (trimmed.includes('->')) {
+            const formulaCard = document.createElement('div');
+            formulaCard.className = "p-4 rounded-xl bg-black/60 border border-muzuri-gold/30 text-muzuri-gold font-mono text-xs sm:text-sm my-4 flex items-center gap-2 overflow-x-auto";
+            formulaCard.innerHTML = `<i class="fa-solid fa-arrow-progress text-muzuri-crimson"></i> <span>${trimmed}</span>`;
+            container.appendChild(formulaCard);
+          } else {
+            paragraphEl.innerText = trimmed;
+            container.appendChild(paragraphEl);
+          }
         }
       });
 
+      // Atualiza botões Anterior / Próximo
+      updateFooterNav();
       renderNav();
       window.scrollTo({ top: 0, behavior: 'smooth' });
-      closeMenu();
     }
 
+    function updateFooterNav() {
+      const prevBtn = document.getElementById('btn-prev');
+      const nextBtn = document.getElementById('btn-next');
+      const prevTitle = document.getElementById('prev-title');
+      const nextTitle = document.getElementById('next-title');
+
+      if (currentChapterIndex > 0) {
+        prevBtn.style.visibility = 'visible';
+        prevTitle.innerText = capitulos[currentChapterIndex - 1].titulo;
+      } else {
+        prevBtn.style.visibility = 'hidden';
+      }
+
+      if (currentChapterIndex < capitulos.length - 1) {
+        nextBtn.style.visibility = 'visible';
+        nextTitle.innerText = capitulos[currentChapterIndex + 1].titulo;
+      } else {
+        nextBtn.style.visibility = 'hidden';
+      }
+    }
+
+    function prevChapter() {
+      if (currentChapterIndex > 0) selectChapterByIndex(currentChapterIndex - 1);
+    }
+
+    function nextChapter() {
+      if (currentChapterIndex < capitulos.length - 1) selectChapterByIndex(currentChapterIndex + 1);
+    }
+
+    // Busca rápida em tempo real
+    function handleSearch(query) {
+      const q = query.toLowerCase().trim();
+      const clearBtn = document.getElementById('clearSearchBtn');
+      
+      if (q.length > 0) {
+        clearBtn.classList.remove('hidden');
+        filteredCapitulos = capitulos.filter(c => 
+          c.titulo.toLowerCase().includes(q) || 
+          c.conteudo.toLowerCase().includes(q) ||
+          c.tag.toLowerCase().includes(q)
+        );
+      } else {
+        clearBtn.classList.add('hidden');
+        filteredCapitulos = [...capitulos];
+      }
+      renderNav();
+    }
+
+    function clearSearch() {
+      const input = document.getElementById('searchInput');
+      input.value = '';
+      handleSearch('');
+      input.focus();
+    }
+
+    // Copiar link do capítulo
+    function copyChapterLink() {
+      const url = window.location.href;
+      navigator.clipboard.writeText(url).then(() => {
+        showToast('Link do capítulo copiado para o WhatsApp!');
+      }).catch(() => {
+        showToast('Capítulo pronto para compartilhamento!');
+      });
+    }
+
+    function showToast(msg) {
+      const toast = document.getElementById('toast');
+      const msgEl = document.getElementById('toast-message');
+      msgEl.innerText = msg;
+      toast.classList.remove('translate-y-20', 'opacity-0');
+      toast.classList.add('translate-y-0', 'opacity-100');
+      setTimeout(() => {
+        toast.classList.remove('translate-y-0', 'opacity-100');
+        toast.classList.add('translate-y-20', 'opacity-0');
+      }, 3000);
+    }
+
+    // Menu Mobile
     function toggleMenu() {
       const sidebar = document.getElementById('sidebar');
       const backdrop = document.getElementById('backdrop');
       const icon = document.getElementById('menuIcon');
       const isOpen = !sidebar.classList.contains('-translate-x-full');
-      
+
       if (isOpen) {
-        sidebar.classList.add('-translate-x-full');
-        backdrop.classList.add('hidden');
-        icon.className = "fa-solid fa-bars";
+        closeMenu();
       } else {
         sidebar.classList.remove('-translate-x-full');
         backdrop.classList.remove('hidden');
-        icon.className = "fa-solid fa-xmark";
+        icon.className = "fa-solid fa-xmark text-muzuri-crimson";
       }
     }
 
@@ -179,11 +706,27 @@
       const icon = document.getElementById('menuIcon');
       sidebar.classList.add('-translate-x-full');
       backdrop.classList.add('hidden');
-      if (icon) icon.className = "fa-solid fa-bars";
+      if (icon) icon.className = "fa-solid fa-bars-staggered";
     }
 
-    // Inicialização
-    selectCapitulo(capitulos[0].id);
+    // Barra de Leitura Superior Conectada ao Scroll
+    window.addEventListener('scroll', () => {
+      const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+      const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+      const scrolled = (winScroll / height) * 100;
+      document.getElementById('progress-bar').style.width = scrolled + "%";
+    });
+
+    // Leitura inicial via Hash na URL (permite abrir direto no capítulo pelo link enviado)
+    window.addEventListener('DOMContentLoaded', () => {
+      const hash = window.location.hash.replace('#', '');
+      const foundIdx = capitulos.findIndex(c => c.id === hash);
+      if (foundIdx !== -1) {
+        selectChapterByIndex(foundIdx);
+      } else {
+        selectChapterByIndex(0);
+      }
+    });
   </script>
 </body>
 </html>
